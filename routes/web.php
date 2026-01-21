@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
+//sdsdsd
 Route::get('/dashboard', function () {
     switch (auth()->user()->user_type) {
         case 'admin':
