@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\Auditable;
+
 class StudentRequest extends Model
 {
+    use Auditable;
     protected $guarded = [];
 
     public function documentType()

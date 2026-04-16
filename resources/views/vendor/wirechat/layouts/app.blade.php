@@ -8,25 +8,10 @@
 
     <title>{{ $title ?? config('app.name', 'Laravel') }}</title>
 
-    <!-- JavaScript to prevent flickering -->
+    <!-- JavaScript to prevent flickering (Light Mode Enforced) -->
     <script>
-        // Function to apply or remove the dark theme
-        function updateTheme(isDark) {
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        // Check the initial theme preference
-        const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        updateTheme(darkModeMediaQuery.matches);
-
-        // Listen for changes in the theme preference
-        darkModeMediaQuery.addEventListener('change', (event) => {
-            updateTheme(event.matches);
-        });
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
     </script>
 
     <!-- Fonts -->

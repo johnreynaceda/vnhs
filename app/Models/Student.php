@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\Auditable;
+
 class Student extends Model
 {
+    use Auditable;
     protected $guarded = [];
 
     public function user()
@@ -30,5 +33,10 @@ class Student extends Model
     public function studentRequests()
     {
         return $this->hasMany(StudentRequest::class);
+    }
+
+    public function schoolYear()
+    {
+        return $this->belongsTo(SchoolYear::class);
     }
 }

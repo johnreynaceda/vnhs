@@ -30,6 +30,10 @@ class StudentRecord extends Component implements HasForms, HasTable
             ->query(Student::query())->headerActions([
                     CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->slideOver()->form([
                         TextInput::make('lrn')->label('LRN ')->numeric()->maxLength(12)->required(),
+                        \Filament\Forms\Components\Select::make('school_year_id')
+                            ->label('School Year')
+                            ->options(\App\Models\SchoolYear::pluck('name', 'id'))
+                            ->required(),
                         TextInput::make('firstname')->required(),
                         TextInput::make('middlename'),
                         TextInput::make('lastname')->required(),
@@ -49,6 +53,7 @@ class StudentRecord extends Component implements HasForms, HasTable
 
                                 Student::create([
                                     'user_id' => $user->id,
+                                    'school_year_id' => $data['school_year_id'],
                                     'firstname' => $data['firstname'],
                                     'middlename' => $data['middlename'] ?? '',
                                     'lastname' => $data['lastname'],
@@ -61,7 +66,8 @@ class StudentRecord extends Component implements HasForms, HasTable
             ->columns([
                 TextColumn::make('user.lrn')->label('LRN'),
                 TextColumn::make('user.name')->label('NAME'),
-                TextColumn::make('address')->label('ADDRESS'),
+                TextColumn::make('schoolYear.name')->label('SCHOOL YEAR')->searchable(),
+                TextColumn::make('address')->label('ADDRESS')->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('user.email')->label('EMAIL'),
                 TextColumn::make('contact')->label('MOBILE'),
             ])

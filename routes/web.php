@@ -43,6 +43,9 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/document-requests', DocumentRequestRecord::class)->name('admin.document-requests');
     Route::get('/teachers', TeacherRecord::class)->name('admin.teachers');
     Route::get('/tracks', TrackRecord::class)->name('admin.tracks');
+    Route::get('/school-years', \App\Livewire\Admin\SchoolYearRecord::class)->name('admin.school-years');
+    Route::get('/users', \App\Livewire\Admin\UserRecord::class)->name('admin.users');
+    Route::get('/audit-trails', \App\Livewire\Admin\AuditTrailRecord::class)->name('admin.audit-trails');
     Route::get('/sections', TrackRecord::class)->name('admin.sections');
     Route::get('/strands', StrandRecord::class)->name('admin.strands');
     Route::get('/sections', SectionList::class)->name('admin.sections');
@@ -50,6 +53,7 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/schedules', ScheduleRecord::class)->name('admin.schedules');
     Route::get('/document-type', DocumentTypeRecord::class)->name('admin.document-type');
     Route::get('/strands/{id}/subjects', StrandSubjectList::class)->name('admin.strand-subject');
+    Route::get('/student-report', \App\Livewire\Admin\StudentReportRecord::class)->name('admin.student-report');
 });
 
 Route::prefix('/teacher')->middleware(['auth', 'verified'])->group(function () {

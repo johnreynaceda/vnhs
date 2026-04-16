@@ -31,7 +31,12 @@ class User extends Authenticatable
 
     public function canCreateChats(): bool
     {
-        return $this->hasVerifiedEmail();
+        return true;
+    }
+
+    public function getCoverUrlAttribute(): ?string
+    {
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=FFFFFF&background=10b981';
     }
 
     /**

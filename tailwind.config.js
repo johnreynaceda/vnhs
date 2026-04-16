@@ -3,6 +3,7 @@ import defaultTheme from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 
 export default {
+    darkMode: 'class',
     presets: [preset, require("./vendor/wireui/wireui/tailwind.config.js")],
     content: [
         "./app/Filament/**/*.php",

@@ -48,6 +48,10 @@ class ScheduleRecord extends Component implements HasForms, HasTable
                         Select::make('Strand_subject_id')->label('Subject')->options(
                             StrandSubject::all()->pluck('name', 'id')
                         )->searchable(),
+                        Select::make('school_year_id')
+                            ->label('School Year')
+                            ->options(\App\Models\SchoolYear::pluck('name', 'id'))
+                            ->required(),
                         Select::make('section_id')->label('Section')->options(
                             Section::all()->pluck('name', 'id')
                         )->searchable(),
@@ -73,6 +77,7 @@ class ScheduleRecord extends Component implements HasForms, HasTable
 
 
                 TextColumn::make('name')->label('SCHEDULE'),
+                TextColumn::make('schoolYear.name')->label('SCHOOL YEAR')->searchable(),
                 TextColumn::make('section.name')->label('SECTION'),
                 TextColumn::make('strandSubject.name')->label('SUBJECT'),
                 TextColumn::make('teacher.user.name')->label('TEACHER'),

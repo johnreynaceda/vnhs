@@ -57,13 +57,18 @@ class Enroll extends Component implements HasForms
 
     public function displaySubject()
     {
-        if (!$this->grade_level_id || !$this->section_id || !$this->track_id || !$this->strand_id) {
-            dd('Please select all fields');
-        } else {
-            $this->name = GradeLevel::where('id', $this->grade_level_id)->first()->name . ' - ' . Section::where('id', $this->section_id)->first()->name;
-            $this->subjects = Schedule::where('section_id', $this->section_id)->get();
+        if (
+            !$this->grade_level_id || $this->grade_level_id === 'draft' || 
+            !$this->section_id || $this->section_id === 'draft' || 
+            !$this->track_id || $this->track_id === 'draft' || 
+            !$this->strand_id || $this->strand_id === 'draft'
+        ) {
+            sweetalert()->error('Please select all program fields to view the schedules.');
+            return;
         }
 
+        $this->name = GradeLevel::where('id', $this->grade_level_id)->first()->name . ' - ' . Section::where('id', $this->section_id)->first()->name;
+        $this->subjects = Schedule::where('section_id', $this->section_id)->get();
     }
 
     public function render()

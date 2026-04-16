@@ -4,8 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\Auditable;
+
 class Strand extends Model
 {
+    use Auditable;
     protected $guarded = [];
 
     public function gradeLevel()
