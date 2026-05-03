@@ -31,6 +31,7 @@ class UserRecord extends Component implements HasForms, HasTable
                 CreateAction::make('new')
                     ->icon('heroicon-o-plus-circle')
                     ->color('main')
+                    ->createAnother(false)
                     ->slideOver()
                     ->form([
                         TextInput::make('name')->required(),

@@ -26,6 +26,19 @@
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Requirements') }}
                         </x-nav-link>
+                    @elseif (auth()->user()->user_type == 'teacher')
+                        <x-nav-link :href="route('teacher.dashboard')" :active="request()->routeIs('teacher.dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('teacher.sections')" :active="request()->routeIs('teacher.sections')">
+                            {{ __('Sections') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('teacher.subjects')" :active="request()->routeIs('teacher.subjects')">
+                            {{ __('Subjects') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('teacher.advisory')" :active="request()->routeIs('teacher.advisory')">
+                            {{ __('Advisory') }}
+                        </x-nav-link>
                     @else
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Dashboard') }}
@@ -163,6 +176,18 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if (auth()->user()->user_type == 'teacher')
+                <x-responsive-nav-link :href="route('teacher.sections')" :active="request()->routeIs('teacher.sections')">
+                    {{ __('Sections') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('teacher.subjects')" :active="request()->routeIs('teacher.subjects')">
+                    {{ __('Subjects') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('teacher.advisory')" :active="request()->routeIs('teacher.advisory')">
+                    {{ __('Advisory') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->

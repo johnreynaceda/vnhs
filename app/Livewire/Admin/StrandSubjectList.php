@@ -4,8 +4,6 @@ namespace App\Livewire\Admin;
 
 use App\Models\Strand;
 use App\Models\StrandSubject;
-use App\Models\Track;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -18,7 +16,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class StrandSubjectList extends Component implements HasForms, HasTable
@@ -41,7 +38,7 @@ class StrandSubjectList extends Component implements HasForms, HasTable
         return $table
             ->query(StrandSubject::query()->where('strand_id', $this->strand_id))->headerActions([
                     Action::make('back')->label('Back')->url(route('admin.strands'))->color('gray')->icon('heroicon-o-arrow-left'),
-                    CreateAction::make('new')->label('New Subject')->icon('heroicon-o-plus-circle')->color('main')->form([
+                    CreateAction::make('new')->label('New Subject')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->form([
                         TextInput::make('name')->required(),
                     ])->modalWidth('xl')->modalSubheading('Input Subject Informatio below.')->action(
                             function ($data) {
@@ -65,7 +62,6 @@ class StrandSubjectList extends Component implements HasForms, HasTable
 
                 EditAction::make('edit')->color('success')->size(ActionSize::ExtraSmall)->form([
                     TextInput::make('name')->required(),
-                    Textarea::make('description')->required()
                 ])->slideOver()->modalWidth('xl'),
                 DeleteAction::make('delete')->size(ActionSize::ExtraSmall)
 

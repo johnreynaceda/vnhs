@@ -15,6 +15,9 @@ use App\Livewire\Admin\TrackRecord;
 use App\Livewire\Student\DocumentRequest;
 use App\Livewire\Student\Enroll;
 use App\Livewire\Student\StudentDashboard;
+use App\Livewire\Teacher\AdvisoryClass;
+use App\Livewire\Teacher\AssignedSections;
+use App\Livewire\Teacher\AssignedSubjects;
 use App\Livewire\Teacher\TeacherDashboard;
 use Illuminate\Support\Facades\Route;
 
@@ -58,6 +61,9 @@ Route::prefix('/admin')->middleware(['auth', 'verified'])->group(function () {
 
 Route::prefix('/teacher')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', TeacherDashboard::class)->name('teacher.dashboard');
+    Route::get('/sections', AssignedSections::class)->name('teacher.sections');
+    Route::get('/subjects', AssignedSubjects::class)->name('teacher.subjects');
+    Route::get('/advisory', AdvisoryClass::class)->name('teacher.advisory');
 });
 
 Route::prefix('/student')->middleware(['auth', 'verified'])->group(function () {

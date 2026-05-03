@@ -27,7 +27,7 @@ class DocumentRequest extends Component implements HasForms, HasTable
     {
         return $table
             ->query(StudentRequest::query()->where('student_id', auth()->user()->student->id))->headerActions([
-                    CreateAction::make('new')->label('New Requests')->icon('heroicon-o-plus-circle')->color('main')->form([
+                    CreateAction::make('new')->label('New Requests')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->form([
                         Select::make('document_type')->options(DocumentType::where('is_active', true)->get()->pluck('type', 'id'))
                     ])->modalWidth('xl')->modalSubheading('Input Requested document  below.')->modalHeading('Create Request')->action(
                             function ($data) {

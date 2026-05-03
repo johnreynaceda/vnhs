@@ -29,7 +29,7 @@ class TrackRecord extends Component implements HasForms, HasTable
     {
         return $table
             ->query(Track::query())->headerActions([
-                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->slideOver()->form([
+                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->slideOver()->form([
                         TextInput::make('name')->required(),
                         Textarea::make('description')->required()
                     ])->modalWidth('xl')->modalSubheading('Input Track Informatio below.')

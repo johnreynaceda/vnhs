@@ -16,6 +16,11 @@ class Section extends Model
         return $this->belongsTo(Strand::class);
     }
 
+    public function adviser()
+    {
+        return $this->belongsTo(Teacher::class, 'adviser_teacher_id');
+    }
+
     public function schedules()
     {
         return $this->hasMany(Schedule::class);
@@ -23,5 +28,10 @@ class Section extends Model
     public function students()
     {
         return $this->hasMany(Student::class);
+    }
+
+    public function modules()
+    {
+        return $this->hasMany(TeacherModule::class);
     }
 }

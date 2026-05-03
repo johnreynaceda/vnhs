@@ -20,4 +20,14 @@ class Teacher extends Model
     {
         return $this->hasMany(Schedule::class);
     }
+
+    public function advisorySections()
+    {
+        return $this->hasMany(Section::class, 'adviser_teacher_id');
+    }
+
+    public function modules()
+    {
+        return $this->hasMany(TeacherModule::class);
+    }
 }

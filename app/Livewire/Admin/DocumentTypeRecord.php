@@ -34,6 +34,7 @@ class DocumentTypeRecord extends Component implements HasForms, HasTable
                     CreateAction::make('new')
                         ->icon('heroicon-o-plus-circle')
                         ->color('main')
+                        ->createAnother(false)
                         ->form([
                             TextInput::make('type')->required(),
                             Toggle::make('is_active')->label('Active')

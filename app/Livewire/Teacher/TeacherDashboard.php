@@ -3,14 +3,14 @@
 namespace App\Livewire\Teacher;
 
 use App\Models\Schedule;
-use Livewire\Component;
+use App\Models\SchoolYear;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Contracts\View\View;
+use Livewire\Component;
 
 class TeacherDashboard extends Component implements HasForms, HasTable
 {
@@ -20,7 +20,7 @@ class TeacherDashboard extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Schedule::query()->where('teacher_id', auth()->user()->teacher->id))
+            ->query($this->assignedSchedulesQuery())
             ->columns([
                 TextColumn::make('strandSubject.name')->label('SUBJECT'),
                 TextColumn::make('section.name')->label('SECTION'),
@@ -41,8 +41,31 @@ class TeacherDashboard extends Component implements HasForms, HasTable
             ]);
     }
 
+    public function activeSchoolYear(): ?SchoolYear
+    {
+        return SchoolYear::active();
+    }
+
+    private function assignedSchedulesQuery()
+    {
+        return Schedule::query()
+            ->where('teacher_id', $this->teacherId())
+            ->when(
+                $this->activeSchoolYear(),
+                fn ($query, SchoolYear $schoolYear) => $query->where('school_year_id', $schoolYear->id),
+                fn ($query) => $query->whereRaw('1 = 0')
+            );
+    }
+
+    private function teacherId(): ?int
+    {
+        return auth()->user()->teacher?->id;
+    }
+
     public function render()
     {
-        return view('livewire.teacher.teacher-dashboard')->layout('layouts.app');
+        return view('livewire.teacher.teacher-dashboard', [
+            'activeSchoolYear' => $this->activeSchoolYear(),
+        ])->layout('layouts.app');
     }
 }

@@ -31,7 +31,7 @@ class StrandRecord extends Component implements HasForms, HasTable
     {
         return $table
             ->query(Strand::query())->headerActions([
-                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->slideOver()->form([
+                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->slideOver()->form([
                         TextInput::make('name')->required(),
                         Textarea::make('description')->required(),
                         Select::make('track_id')->label('Track')->options(

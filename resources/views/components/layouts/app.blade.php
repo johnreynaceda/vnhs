@@ -237,8 +237,29 @@
                 <div class="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true"></div>
 
                 <div class="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                    <div class="flex-1 flex items-center">
+                    <div class="flex-1 flex items-center gap-6">
                         <h1 class="uppercase font-bold text-gray-600">{{ auth()->user()->user_type }}</h1>
+
+                        @if (auth()->user()->user_type === 'teacher')
+                            <nav class="hidden md:flex items-center gap-1">
+                                <a href="{{ route('teacher.dashboard') }}"
+                                    class="rounded-md px-3 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-blue-700 {{ request()->routeIs('teacher.dashboard') ? 'bg-blue-50 text-blue-700' : '' }}">
+                                    Dashboard
+                                </a>
+                                <a href="{{ route('teacher.sections') }}"
+                                    class="rounded-md px-3 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-blue-700 {{ request()->routeIs('teacher.sections') ? 'bg-blue-50 text-blue-700' : '' }}">
+                                    Sections
+                                </a>
+                                <a href="{{ route('teacher.subjects') }}"
+                                    class="rounded-md px-3 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-blue-700 {{ request()->routeIs('teacher.subjects') ? 'bg-blue-50 text-blue-700' : '' }}">
+                                    Subjects
+                                </a>
+                                <a href="{{ route('teacher.advisory') }}"
+                                    class="rounded-md px-3 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-blue-700 {{ request()->routeIs('teacher.advisory') ? 'bg-blue-50 text-blue-700' : '' }}">
+                                    Advisory
+                                </a>
+                            </nav>
+                        @endif
                     </div>
                     <div class="flex items-center gap-x-4 lg:gap-x-6">
                         {{-- <button type="button" class="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">

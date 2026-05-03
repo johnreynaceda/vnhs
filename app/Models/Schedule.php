@@ -11,6 +11,15 @@ class Schedule extends Model
     use Auditable;
     protected $guarded = [];
 
+    protected static function booted()
+    {
+        static::creating(function ($schedule) {
+            if (!$schedule->school_year_id) {
+                $schedule->school_year_id = SchoolYear::active()?->id;
+            }
+        });
+    }
+
     public function section()
     {
         return $this->belongsTo(Section::class);
@@ -29,5 +38,10 @@ class Schedule extends Model
     public function schoolYear()
     {
         return $this->belongsTo(SchoolYear::class);
+    }
+
+    public function modules()
+    {
+        return $this->hasMany(TeacherModule::class);
     }
 }

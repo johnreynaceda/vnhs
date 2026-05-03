@@ -28,7 +28,7 @@ class TeacherRecord extends Component implements HasForms, HasTable
     {
         return $table
             ->query(Teacher::query())->headerActions([
-                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->slideOver()->form([
+                    CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->slideOver()->form([
                         TextInput::make('teacher_id')->label('Teacher ID')->numeric()->maxLength(12)->required(),
                         TextInput::make('firstname')->required(),
                         TextInput::make('middlename'),

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Models\GradeLevel;
 use App\Models\Section;
 use App\Models\Strand;
+use App\Models\Teacher;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -18,7 +19,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
 class SectionList extends Component implements HasForms, HasTable
@@ -34,6 +34,7 @@ class SectionList extends Component implements HasForms, HasTable
                     CreateAction::make('new')
                         ->icon('heroicon-o-plus-circle')
                         ->color('main')
+                        ->createAnother(false)
                         ->slideOver()
                         ->form([
                             TextInput::make('name')->required(),
@@ -50,11 +51,21 @@ class SectionList extends Component implements HasForms, HasTable
                                 )
                                 ->reactive() // Ensure it updates dynamically
                                 ->required(),
+                            Select::make('adviser_teacher_id')
+                                ->label('Adviser')
+                                ->options(
+                                    Teacher::get()->mapWithKeys(function ($record) {
+                                        return [$record->id => 'T. ' . $record->user->name];
+                                    })
+                                )
+                                ->searchable()
+                                ->required(),
                         ])
                         ->modalWidth('xl')->modalSubheading('Input Section Information  below.')->action(function ($data) {
                             Section::create([
                                 'name' => $data['name'],
                                 'strand_id' => $data['strand'],
+                                'adviser_teacher_id' => $data['adviser_teacher_id'],
                             ]);
                         })
                 ])
@@ -65,6 +76,7 @@ class SectionList extends Component implements HasForms, HasTable
                 TextColumn::make('strand.track.name')->label('TRACK'),
                 TextColumn::make('strand.name')->label('STRAND'),
                 TextColumn::make('strand.gradeLevel.name')->label('GRADE LEVEL'),
+                TextColumn::make('adviser.user.name')->label('ADVISER')->placeholder('Not assigned'),
 
 
             ])
@@ -75,6 +87,15 @@ class SectionList extends Component implements HasForms, HasTable
                 Action::make('manage_schedule')->button()->outlined()->color('main')->size(ActionSize::ExtraSmall)->url(fn($record) => route('admin.sections-schedule', ['id' => $record->id])),
                 EditAction::make('edit')->color('success')->size(ActionSize::ExtraSmall)->form([
                     TextInput::make('name')->required(),
+                    Select::make('adviser_teacher_id')
+                        ->label('Adviser')
+                        ->options(
+                            Teacher::get()->mapWithKeys(function ($record) {
+                                return [$record->id => 'T. ' . $record->user->name];
+                            })
+                        )
+                        ->searchable()
+                        ->required(),
                 ])->slideOver()->modalWidth('xl'),
                 DeleteAction::make('delete')->size(ActionSize::ExtraSmall)
 
