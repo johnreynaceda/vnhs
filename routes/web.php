@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentModuleController;
 use App\Http\Middleware\IsEnrolled;
 use App\Livewire\Admin\AdminDashboard;
 use App\Livewire\Admin\DocumentRequestRecord;
@@ -15,6 +16,7 @@ use App\Livewire\Admin\TrackRecord;
 use App\Livewire\Student\DocumentRequest;
 use App\Livewire\Student\Enroll;
 use App\Livewire\Student\StudentDashboard;
+use App\Livewire\Student\StudentModules;
 use App\Livewire\Teacher\AdvisoryClass;
 use App\Livewire\Teacher\AssignedSections;
 use App\Livewire\Teacher\AssignedSubjects;
@@ -70,6 +72,9 @@ Route::prefix('/student')->middleware(['auth', 'verified'])->group(function () {
     Route::middleware([IsEnrolled::class])->group(function () {
         Route::get('/', StudentDashboard::class)->name('student.dashboard');
         Route::get('/request-document', DocumentRequest::class)->name('student.request-document');
+        Route::get('/modules', StudentModules::class)->name('student.modules');
+        Route::get('/modules/{module}', [StudentModuleController::class, 'show'])->name('student.modules.show');
+        Route::get('/modules/{module}/download', [StudentModuleController::class, 'download'])->name('student.modules.download');
     });
 
     Route::get('/enroll', Enroll::class)->name('student.enroll');

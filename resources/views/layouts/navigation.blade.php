@@ -20,11 +20,11 @@
                         <x-nav-link :href="route('student.request-document')" :active="request()->routeIs('student.request-document')">
                             {{ __('Document Requests') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Schedules') }}
+                        <x-nav-link :href="route('student.modules')" :active="request()->routeIs('student.modules')">
+                            {{ __('Modules') }}
                         </x-nav-link>
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Requirements') }}
+                            {{ __('Schedules') }}
                         </x-nav-link>
                     @elseif (auth()->user()->user_type == 'teacher')
                         <x-nav-link :href="route('teacher.dashboard')" :active="request()->routeIs('teacher.dashboard')">
@@ -186,6 +186,13 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('teacher.advisory')" :active="request()->routeIs('teacher.advisory')">
                     {{ __('Advisory') }}
+                </x-responsive-nav-link>
+            @elseif (auth()->user()->user_type == 'student')
+                <x-responsive-nav-link :href="route('student.modules')" :active="request()->routeIs('student.modules')">
+                    {{ __('Modules') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('student.request-document')" :active="request()->routeIs('student.request-document')">
+                    {{ __('Document Requests') }}
                 </x-responsive-nav-link>
             @endif
         </div>

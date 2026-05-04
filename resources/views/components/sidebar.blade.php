@@ -30,6 +30,7 @@
 
     $studentItems = [
         ['label' => 'Dashboard', 'route' => 'student.dashboard', 'active' => 'student.dashboard', 'icon' => 'D'],
+        ['label' => 'Modules', 'route' => 'student.modules', 'active' => 'student.modules', 'icon' => 'M'],
         ['label' => 'Request Document', 'route' => 'student.request-document', 'active' => 'student.request-document', 'icon' => 'R'],
         ['label' => 'Enroll', 'route' => 'student.enroll', 'active' => 'student.enroll', 'icon' => 'E'],
     ];
