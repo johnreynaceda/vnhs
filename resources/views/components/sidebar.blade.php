@@ -15,7 +15,6 @@
         ['label' => 'Tracks', 'route' => 'admin.tracks', 'active' => 'admin.tracks', 'icon' => 'T'],
         ['label' => 'Strands', 'route' => 'admin.strands', 'active' => 'admin.strands', 'icon' => 'S'],
         ['label' => 'Sections', 'route' => 'admin.sections', 'active' => ['admin.sections', 'admin.sections-schedule'], 'icon' => 'C'],
-        ['label' => 'Schedules', 'route' => 'admin.schedules', 'active' => 'admin.schedules', 'icon' => 'H'],
         ['label' => 'Student Report', 'route' => 'admin.student-report', 'active' => 'admin.student-report', 'icon' => 'P'],
         ['label' => 'Users', 'route' => 'admin.users', 'active' => 'admin.users', 'icon' => 'U'],
         ['label' => 'Audit Trail', 'route' => 'admin.audit-trails', 'active' => 'admin.audit-trails', 'icon' => 'A'],
@@ -34,6 +33,8 @@
         ['label' => 'Request Document', 'route' => 'student.request-document', 'active' => 'student.request-document', 'icon' => 'R'],
         ['label' => 'Enroll', 'route' => 'student.enroll', 'active' => 'student.enroll', 'icon' => 'E'],
     ];
+
+    $items = $userType === 'teacher' ? $teacherItems : ($userType === 'student' ? $studentItems : $adminItems);
 @endphp
 
 <nav class="flex min-h-0 flex-1 flex-col">
@@ -45,7 +46,7 @@
     </div>
 
     <ul role="list" class="space-y-1">
-        @foreach ($userType === 'teacher' ? $teacherItems : ($userType === 'student' ? $studentItems : $adminItems) as $item)
+        @foreach ($items as $item)
             @php
                 $activeRoutes = (array) $item['active'];
                 $isActive = request()->routeIs(...$activeRoutes);

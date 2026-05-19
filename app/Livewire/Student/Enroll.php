@@ -39,14 +39,80 @@ class Enroll extends Component implements HasForms
         $this->student = Auth::user()->student;
     }
 
+    public function updatedGradeLevelId()
+    {
+        $this->resetProgramSelection();
+    }
+
+    public function updatedTrackId()
+    {
+        $this->resetProgramSelection();
+    }
+
+    public function updatedStrandId()
+    {
+        $this->section_id = null;
+        $this->clearDisplayedSubjects();
+    }
+
+    public function updatedSectionId()
+    {
+        $this->clearDisplayedSubjects();
+    }
+
+    private function resetProgramSelection()
+    {
+        $this->strand_id = null;
+        $this->section_id = null;
+        $this->clearDisplayedSubjects();
+    }
+
+    private function clearDisplayedSubjects()
+    {
+        $this->subjects = null;
+        $this->name = null;
+    }
+
+    private function hasCompleteProgramSelection()
+    {
+        return $this->grade_level_id && $this->grade_level_id !== 'draft'
+            && $this->section_id && $this->section_id !== 'draft'
+            && $this->track_id && $this->track_id !== 'draft'
+            && $this->strand_id && $this->strand_id !== 'draft';
+    }
+
+    private function selectedSection()
+    {
+        if (! $this->hasCompleteProgramSelection()) {
+            return null;
+        }
+
+        return Section::query()
+            ->whereKey($this->section_id)
+            ->where('strand_id', $this->strand_id)
+            ->whereHas('strand', function ($query) {
+                $query->where('grade_level_id', $this->grade_level_id)
+                    ->where('track_id', $this->track_id);
+            })
+            ->with('strand.gradeLevel')
+            ->first();
+    }
+
     public function enrollStudent()
     {
+        $section = $this->selectedSection();
+
+        if (! $section) {
+            sweetalert()->error('Please select a valid grade level, track, strand, and section.');
+            return;
+        }
+
         sleep(2);
         $this->student->update([
             'is_enlisted' => true,
-            'grade_level_id' => $this->grade_level_id,
-            'strand_id' => $this->strand_id,
-            'section_id' => $this->section_id,
+            'grade_level_id' => $section->strand->grade_level_id,
+            'strand_id' => $section->strand_id,
+            'section_id' => $section->id,
 
         ]);
         sweetalert()->success('Your enrollment is successful. You are now on enlist status');
@@ -57,27 +123,43 @@ class Enroll extends Component implements HasForms
 
     public function displaySubject()
     {
-        if (
-            !$this->grade_level_id || $this->grade_level_id === 'draft' || 
-            !$this->section_id || $this->section_id === 'draft' || 
-            !$this->track_id || $this->track_id === 'draft' || 
-            !$this->strand_id || $this->strand_id === 'draft'
-        ) {
+        if (! $this->hasCompleteProgramSelection()) {
             sweetalert()->error('Please select all program fields to view the schedules.');
             return;
         }
 
-        $this->name = GradeLevel::where('id', $this->grade_level_id)->first()->name . ' - ' . Section::where('id', $this->section_id)->first()->name;
-        $this->subjects = Schedule::where('section_id', $this->section_id)->get();
+        $section = $this->selectedSection();
+
+        if (! $section) {
+            $this->clearDisplayedSubjects();
+            sweetalert()->error('The selected section does not match the chosen program.');
+            return;
+        }
+
+        $this->name = $section->strand->gradeLevel->name . ' - ' . $section->name;
+        $this->subjects = Schedule::where('section_id', $section->id)->get();
     }
 
     public function render()
     {
+        $hasProgramParent = $this->grade_level_id && $this->grade_level_id !== 'draft'
+            && $this->track_id && $this->track_id !== 'draft';
+
+        $strands = $hasProgramParent
+            ? Strand::where('grade_level_id', $this->grade_level_id)
+                ->where('track_id', $this->track_id)
+                ->get()
+            : collect();
+
+        $sections = $this->strand_id && $this->strand_id !== 'draft'
+            ? Section::where('strand_id', $this->strand_id)->get()
+            : collect();
+
         return view('livewire.student.enroll', [
             'tracks' => Track::all(),
             'gradeLevels' => GradeLevel::all(),
-            'strands' => Strand::where('grade_level_id', $this->grade_level_id)->where('track_id', $this->track_id)->get(),
-            'sections' => Section::where('strand_id', $this->track_id)->get(),
+            'strands' => $strands,
+            'sections' => $sections,
         ])->layout(
                 'layouts.app'
             );
