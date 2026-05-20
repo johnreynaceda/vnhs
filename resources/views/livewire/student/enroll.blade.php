@@ -20,7 +20,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-black tracking-tight text-slate-800">Enrollment Portal</h1>
-                <p class="text-slate-500 font-medium mt-1">Select your preferred program to view the matching schedules.</p>
+                <p class="text-slate-500 font-medium mt-1">Select your preferred program to view the matching subjects.</p>
             </div>
         </div>
 
@@ -127,13 +127,13 @@
                 <div class="h-96 flex flex-col items-center justify-center p-10 bg-slate-50/50">
                     <x-shared.schedule class="h-48 w-48 mb-6 opacity-70" />
                     <h3 class="text-lg font-bold text-slate-600">No Subjects Selected</h3>
-                    <p class="text-slate-400 text-sm mt-1 max-w-sm text-center">Fill out your academic program details above and click "Load Available Subjects" to view your prospective schedule.</p>
+                    <p class="text-slate-400 text-sm mt-1 max-w-sm text-center">Fill out your academic program details above and click "Load Available Subjects" to view your subjects.</p>
                 </div>
             @else
                 <div class="p-8">
                     <div class="flex items-center justify-between mb-8 pb-6 border-b border-slate-100">
                         <div>
-                            <p class="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-1">Generated Schedule</p>
+                            <p class="text-xs font-bold text-emerald-500 uppercase tracking-widest mb-1">Available Subjects</p>
                             <h2 class="text-2xl font-extrabold text-slate-800 uppercase">{{ $name }}</h2>
                         </div>
                     </div>
@@ -143,33 +143,20 @@
                             <thead>
                                 <tr class="bg-slate-50/80 text-xs font-bold uppercase tracking-wider text-slate-500 border-b border-slate-200">
                                     <th class="py-4 px-6 text-slate-800">Subject</th>
-                                    <th class="py-4 px-6">Section</th>
-                                    <th class="py-4 px-6">Day</th>
-                                    <th class="py-4 px-6">Room #</th>
-                                    <th class="py-4 px-6 text-emerald-600 text-right">Schedule Time</th>
+                                    <th class="py-4 px-6 text-emerald-600 text-right">Program</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 @forelse ($subjects as $item)
                                     <tr class="hover:bg-slate-50/60 transition-colors group">
-                                        <td class="py-4 px-6 text-sm font-bold text-slate-800">{{ $item->strandSubject->name }}</td>
-                                        <td class="py-4 px-6 text-sm font-semibold text-slate-600">{{ $item->section->name }}</td>
-                                        <td class="py-4 px-6 text-sm font-semibold text-slate-600">
-                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-slate-200 shadow-sm text-slate-700">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                                                {{ $item->day }}
-                                            </span>
-                                        </td>
-                                        <td class="py-4 px-6 text-sm font-semibold text-slate-600">
-                                            <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">{{ $item->room_number }}</span>
-                                        </td>
+                                        <td class="py-4 px-6 text-sm font-bold text-slate-800">{{ $item->name }}</td>
                                         <td class="py-4 px-6 text-sm font-bold text-slate-700 text-right">
-                                            {{ \Carbon\Carbon::parse($item->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($item->end_time)->format('h:i A') }}
+                                            {{ $name }}
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="py-12 text-center text-slate-400 font-medium">No subjects allocated for this configuration.</td>
+                                        <td colspan="2" class="py-12 text-center text-slate-400 font-medium">No subjects allocated for this configuration.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

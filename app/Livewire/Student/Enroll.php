@@ -3,9 +3,9 @@
 namespace App\Livewire\Student;
 
 use App\Models\GradeLevel;
-use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\Strand;
+use App\Models\StrandSubject;
 use App\Models\Teacher;
 use App\Models\Track;
 use Filament\Forms\Components\Grid;
@@ -124,7 +124,7 @@ class Enroll extends Component implements HasForms
     public function displaySubject()
     {
         if (! $this->hasCompleteProgramSelection()) {
-            sweetalert()->error('Please select all program fields to view the schedules.');
+            sweetalert()->error('Please select all program fields to view the subjects.');
             return;
         }
 
@@ -137,7 +137,9 @@ class Enroll extends Component implements HasForms
         }
 
         $this->name = $section->strand->gradeLevel->name . ' - ' . $section->name;
-        $this->subjects = Schedule::where('section_id', $section->id)->get();
+        $this->subjects = StrandSubject::where('strand_id', $section->strand_id)
+            ->orderBy('name')
+            ->get();
     }
 
     public function render()
