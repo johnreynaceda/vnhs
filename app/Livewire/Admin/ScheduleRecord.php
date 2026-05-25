@@ -78,8 +78,6 @@ class ScheduleRecord extends Component implements HasForms, HasTable
             ->columns([
 
 
-                TextColumn::make('name')->label('SCHEDULE'),
-                TextColumn::make('schoolYear.name')->label('SCHOOL YEAR')->searchable(),
                 TextColumn::make('section.name')->label('SECTION'),
                 TextColumn::make('strandSubject.name')->label('SUBJECT'),
                 TextColumn::make('teacher.user.name')->label('TEACHER'),
