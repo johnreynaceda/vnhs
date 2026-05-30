@@ -43,15 +43,9 @@ class ScheduleRecord extends Component implements HasForms, HasTable
             ->query(Schedule::query()->when($this->section_id, fn ($query) => $query->where('section_id', $this->section_id)))->headerActions([
                     Action::make('back')->label('Back')->url(route('admin.sections'))->color('gray')->icon('heroicon-o-arrow-left'),
                     CreateAction::make('new')->icon('heroicon-o-plus-circle')->color('main')->createAnother(false)->slideOver()->form([
-                        TextInput::make('name')->required(),
                         Select::make('strand_subject_id')->label('Subject')->options(
                             StrandSubject::all()->pluck('name', 'id')
                         )->searchable(),
-                        Select::make('school_year_id')
-                            ->label('School Year')
-                            ->options(SchoolYear::pluck('name', 'id'))
-                            ->default(fn () => SchoolYear::active()?->id)
-                            ->required(),
                         Select::make('section_id')->label('Section')->options(
                             Section::all()->pluck('name', 'id')
                         )
@@ -95,15 +89,10 @@ class ScheduleRecord extends Component implements HasForms, HasTable
             ->actions([
                 ActionGroup::make([
                     EditAction::make('edit')->color('success')->size(ActionSize::ExtraSmall)->form([
-                        TextInput::make('name')->required(),
                         Select::make('strand_subject_id')
                             ->label('Subject')
                             ->options(StrandSubject::all()->pluck('name', 'id'))
                             ->searchable()
-                            ->required(),
-                        Select::make('school_year_id')
-                            ->label('School Year')
-                            ->options(SchoolYear::pluck('name', 'id'))
                             ->required(),
                         Select::make('section_id')
                             ->label('Section')

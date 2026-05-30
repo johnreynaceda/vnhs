@@ -17,6 +17,13 @@ class Schedule extends Model
             if (!$schedule->school_year_id) {
                 $schedule->school_year_id = SchoolYear::active()?->id;
             }
+
+            if (empty($schedule->name)) {
+                $subjectName = StrandSubject::find($schedule->strand_subject_id)?->name ?? 'Subject';
+                $sectionName = Section::find($schedule->section_id)?->name ?? 'Section';
+                $day = $schedule->day ?? 'Day';
+                $schedule->name = "{$subjectName} - {$sectionName} - {$day}";
+            }
         });
     }
 
